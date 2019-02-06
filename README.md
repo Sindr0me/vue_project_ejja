@@ -1,5 +1,4 @@
-# cliapp1
-
+# ejja.ru
 ## Project setup
 ```
 npm install
