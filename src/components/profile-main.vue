@@ -12,8 +12,8 @@
 
     <div class="incomes-costs">
       <div class="incomes-costs-val">
-        <span>Доход: <span class="total-income">{{this.getTotalIncomes()}}</span></span><br>
-        <span>Расход: <span class="total-cost">{{this.getTotalCosts()}}</span></span>
+        <span class="total-income-wrap">Доход: <span class="total-income">{{this.getTotalIncomes()}}</span></span><br>
+        <span class="total-cost-wrap">Расход: <span class="total-cost">{{this.getTotalCosts()}}</span></span>
       </div>
 
     </div>
@@ -38,7 +38,7 @@
       </div>
 
       <div class="history">
-        
+
       </div>
     </div>
 
@@ -402,13 +402,21 @@
 
     }
 
-    .total-income {
+    .total-income-wrap {
+      min-width: 140px;
+      min-height: 35px;
+    background: url(../assets/img/income.png) 100% 100% no-repeat;
+      text-align: center;
+vertical-align: middle;
 
     }
-
-    .total-cost {
-
+    .total-cost-wrap {
+      min-width: 140px;
+      min-height: 35px;
+      background: url(../assets/img/cost.png) 100% 100% no-repeat;
+      text-align: center;
     }
+
   }
 
   .btn:hover,.btn:focus{
