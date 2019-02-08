@@ -38,7 +38,7 @@
       </div>
 
       <div class="history">
-
+        <history v-for="item in getHistory" :prop="item"></history>
       </div>
     </div>
 
@@ -50,12 +50,14 @@
 
   import income from './income.vue'
   import cost from './cost.vue'
+  import history from './history-item.vue'
   import axios from 'axios'
 
   export default {
     components: {
       income,
-      cost
+      cost,
+      history
     },
       name:"profile-main",
     data() {
@@ -328,6 +330,9 @@
 
     },
     computed: {
+        getHistory : function () {
+            return this.$store.state.data.response.result.diagram;
+        }
     },
     beforeCreate() {
     },
@@ -385,7 +390,6 @@
   }
 
   .incomes-costs {
-
     font-size: 1.2em;
     display: flex;
     flex-direction: column;
@@ -404,11 +408,11 @@
     .total-income-wrap {
       min-width: 140px;
       min-height: 35px;
-    background: url(../assets/img/income.png) 100% 100% no-repeat;
+      background: url(../assets/img/income.png) 100% 100% no-repeat;
       text-align: center;
-vertical-align: middle;
-
+      vertical-align: middle;
     }
+
     .total-cost-wrap {
       min-width: 140px;
       min-height: 35px;
@@ -434,13 +438,11 @@ vertical-align: middle;
   align-items: center;
   margin-top: 20px;
 
-
   .markers-wrap {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-
     flex-wrap: wrap;
     width: 70%;
 

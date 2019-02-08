@@ -1,7 +1,9 @@
 <template>
 
   <div class="hist-item">
-    item
+    {{prop.name_ru}} |
+    {{prop.amount}} |
+    {{prop.dadd}}
   </div>
 
 </template>
@@ -14,7 +16,7 @@
       return {
       };
     },
-    props: ['item'],
+    props: ['prop'],
     methods: {
 
     },
@@ -22,12 +24,13 @@
 
     },
     beforeCreate() {
-      console.log('Nothing gets called before me!')
+
     },
     created() {
 
     },
     mounted () {
+
     },
     beforeDestroy () {
       console.log('beforeDestroy')

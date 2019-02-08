@@ -8,7 +8,7 @@
     {{getMainData}}
 
     <div v-if="Object.keys(data.maindata).length > 0">
-      {{data.maindata}}
+      <!--{{data.maindata}}-->
       <profileMain></profileMain>
     </div>
     <div v-if="Object.keys(data.maindata).length == 0">Данные не были получены
@@ -83,7 +83,8 @@
         if (data.error) {
           this.data.error = this.$store.state.data;
           if (data.error.status === 301){
-            setTimeout(()=>{            this.$router.push('');
+            setTimeout(()=>{
+                this.$router.push('/');
             }, 5000);
             return 'Вы будете перенаправлены на глвную страницу, авторизируйтесь';
           }
