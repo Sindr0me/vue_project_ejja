@@ -8,7 +8,7 @@
     {{getMainData}}
 
     <div v-if="Object.keys(data.maindata).length > 0">
-      <!--{{data.maindata}}-->
+      {{data.maindata}}
       <profileMain></profileMain>
     </div>
     <div v-if="Object.keys(data.maindata).length == 0">Данные не были получены

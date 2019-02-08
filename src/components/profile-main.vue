@@ -22,7 +22,7 @@
     <div class="progressbar" v-if="!dontShowBar">
       <div class="containerWrap" ref="containerWrap">
         <div id="container"></div>
-        Остаток {{getdifference()}} руб
+        <span>Остаток {{getdifference()}} руб</span>
       </div>
     </div>
 
@@ -37,6 +37,9 @@
         <button class="btn btn--sm green" @click="showModal">Доход</button>
       </div>
 
+      <div class="history">
+        
+      </div>
     </div>
 
   </main>
@@ -68,6 +71,7 @@
     },
     methods: {
       getdifference () {
+
           let data = this.$store.state.data.response.result;
           if (!data.costs.total && !data.incomes.total) {
               this.dontShowBar = true;
@@ -84,12 +88,16 @@
       initProgressBar (){
         if (this.getdifference() == false) return '';
 
-        var data = [this.getTotalCosts(), this.getTotalIncomes()]; // here are the data values; v1 = total, v2 = current value
+        var data = [parseInt(this.getTotalIncomes()), this.getTotalCosts()]; // here are the data values; v1 = total, v2 = current value
+        d3.select("#container")[0][0].innerHTML = '';
 
         var chart = d3.select("#container").append("svg") // creating the svg object inside the container div
           .attr("class", "chartt")
           .attr("width", 100 + '%') // bar has a fixed width
           .attr("height", 35);
+
+
+
 
         var x = d3.scale.linear() // takes the fixed width and creates the percentage from the data values
           .domain([0, d3.max(data)])
@@ -199,7 +207,8 @@
           .finally(() => (
             this.$store.state.preloader = false,
             this.updateCurrDiagramm(),
-            this.initMarkers()
+            this.initMarkers(),
+              this.initProgressBar()
 
       ));
       },
@@ -220,6 +229,7 @@
         .then(response => (this.$store.state.data = response.data))
         .catch(error => console.log(error))
         .finally(() => {
+        this.initProgressBar();
         });
     },
 
@@ -266,8 +276,6 @@
           newChangeDataArr.push({"label": dfd, "value": newChangeData[dfd].toString()})
         }
 
-        console.log(newChangeDataArr)
-
           //добавляем цвета
           var color = d3.scale.ordinal().domain(arrNames).range(arrColors);
 
@@ -287,7 +295,7 @@
           });
           slice.exit().remove();
       },
-      initMarkers (info) {
+      initMarkers () {
 
         var changeData = [];
         var newChangeData = {};
@@ -322,7 +330,6 @@
     computed: {
     },
     beforeCreate() {
-      console.log('Nothing gets called before me!')
     },
     created() {
 
@@ -331,20 +338,15 @@
     this.initGraph();
     this.initMarkers();
     this.initProgressBar();
-
-
     },
     beforeDestroy () {
-      console.log('beforeDestroy')
     },
     destroyed () {
-      console.log('destroyed')
     }
   }
 
 
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 
@@ -354,14 +356,12 @@
     opacity: 0;
   }
 
+  span {
+    color: #544f55;
+  }
   .modal-fade-enter-active,
   .modal-fade-leave-active {
     transition: opacity 0.3s ease;
-  }
-
-  .main {
-
-
   }
 
   .progressbar {
