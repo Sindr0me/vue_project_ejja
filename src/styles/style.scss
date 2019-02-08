@@ -104,10 +104,23 @@ html, body {
       display: flex;
       flex-direction: column;
       width: 100%;
-      height: 420px;
+      height: 400px;
 
       .svgd {
-        height: 420px;
+        height: 400px;
+      }
+    }
+  }
+
+  @media #{$mobile-min} {
+    .graph {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 350px;
+
+      .svgd {
+        height: 350px;
       }
     }
   }

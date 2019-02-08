@@ -78,8 +78,6 @@
     font-size: 1.3em;
   }
 
-
-
   .message-header:before {
     content:'';
     display: inline-block;

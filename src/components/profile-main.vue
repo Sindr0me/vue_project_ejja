@@ -38,7 +38,19 @@
       </div>
 
       <div class="history">
-        <history v-for="item in getHistory" :prop="item"></history>
+        <div class="accordion">
+          <article class="message" :class="accordionClasses">
+            <div class="message-header" @click="toggleAccordion">
+              История операций
+            </div>
+            <div class="message-body">
+              <div class="message-content">
+                <history v-for="item in getHistory" :prop="item"></history>
+              </div>
+            </div>
+          </article>
+        </div>
+
       </div>
     </div>
 
@@ -68,10 +80,14 @@
         isModalVisible: false,
         isModalCostsVisible: false,
         categories:'',
-        dontShowBar: null
+        dontShowBar: null,
+        isOpen: false
       };
     },
     methods: {
+      toggleAccordion: function() {
+        this.isOpen = !this.isOpen;
+      },
       getdifference () {
 
           let data = this.$store.state.data.response.result;
@@ -330,8 +346,37 @@
 
     },
     computed: {
+      accordionClasses: function() {
+        return {
+          'is-closed': !this.isOpen,
+          'is-primary': this.isOpen,
+          'is-dark': !this.isOpen
+        };
+      },
         getHistory : function () {
-            return this.$store.state.data.response.result.diagram;
+
+          let diagram = this.$store.state.data.response.result.diagram;
+          let incomes = this.$store.state.data.response.result.incomes.all;
+
+          let retArr = [];
+
+          if (incomes.length > 0) {
+              incomes.forEach((item, num) => {
+                item.name_ru = '';
+                item.type = 'income';
+                retArr.push(item);
+            })
+          }
+          if (diagram.length > 0) {
+            diagram.forEach((item, num) => {
+              item.type = 'cost';
+              retArr.push(item);
+            })
+          }
+
+            return retArr.sort((a,b)=>{
+              return new Date(b.dadd) - new Date(a.dadd);
+            });
         }
     },
     beforeCreate() {
@@ -354,8 +399,101 @@
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
   @import "../styles/abstracts/abst.module.scss";
+
+  .history {
+    width : 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  .accordion {
+    width: 100%;
+    margin-bottom: 10%;
+
+    .message {
+      border-radius: 10px;
+      width: 100%;
+      margin: 5px;
+      padding: 2px 0 2px 10px;
+    }
+
+    .message-header {
+      padding: 20px;
+      cursor: pointer;
+      font-size: 1.3em;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .message-header:before {
+      content:'';
+      display: inline-block;
+      width:12px;
+      height: 12px;
+      border-bottom: 3px solid black;
+      border-right: 3px solid black;
+      transform: rotate(-135deg);
+      /*margin-bottom: 7px;*/
+      transition: all 0.5s ease;
+      margin: 8px 12px 8px 8px;
+
+    }
+    .message-header:after {
+      content:'';
+      display: inline-block;
+      width:12px;
+      height: 12px;
+      border-bottom: 3px solid black;
+      border-right: 3px solid black;
+      transform: rotate(-135deg);
+      /*margin-bottom: 7px;*/
+      transition: all 0.5s ease;
+      margin: 8px 8px 8px 12px;
+    }
+
+    .message-body {
+      font-size: 1em;
+      padding: 0;
+      overflow: hidden;
+      transition: 0.3s ease all;
+    }
+
+    .is-closed .message-body {
+      max-height: 0;
+    }
+    .is-closed .message-header {
+      color: #838790;
+    }
+    .is-closed  .message-header:before {
+      content:'';
+      display: inline-block;
+      width:12px;
+      height: 12px;
+      border-bottom: 3px solid #585b61;
+      border-right: 3px solid #585b61;
+      transform: rotate(45deg);
+      margin-bottom: 7px;
+      transition: all 0.5s ease;
+    }    .is-closed  .message-header:after {
+      content:'';
+      display: inline-block;
+      width:12px;
+      height: 12px;
+      border-bottom: 3px solid #585b61;
+      border-right: 3px solid #585b61;
+      transform: rotate(45deg);
+      margin-bottom: 7px;
+      transition: all 0.5s ease;
+    }
+
+    .message-content {
+      /*padding: 20px;*/
+    }
+  }
+  }
+
   .modal-fade-enter,
   .modal-fade-leave-active {
     opacity: 0;
@@ -398,7 +536,7 @@
 
     .incomes-costs-val {
       position: absolute;
-      top: 23%;
+      top: 21%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -496,9 +634,14 @@
 }
 
 
+
+
   @media #{$tablet} {
 
     .other-wrap {
+      .history {
+        width : 80%;
+      }
       .add-buttons {
         margin-top:20px;
         width: 55%;
@@ -532,7 +675,9 @@
     }
 
     .other-wrap {
-
+      .history {
+        width : 90%;
+      }
       .markers-wrap {
         width: 100%;
 

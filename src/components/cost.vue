@@ -11,7 +11,7 @@
         <section class="modal-body">
             <div class="cost-items" v-if="categories">
               <div class="cost" v-for="cat in categories" @click.stop="toggleActive(cat.id)" :class="{ 'active': activeIndex === cat.id }">
-                <i v-bind:class="cat.icon" v-bind:style="{'color': cat.color, 'font-size': '3em' }"></i>
+                <i :class="cat.icon" :style="{'color': cat.color, 'font-size': '3em' }"></i>
                 {{cat.name_ru}}
               </div>
             </div>
